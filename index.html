@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MxstCC Terminal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+        #terminal {
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .line-1 { color: #888888; }
+        .line-2 { color: #ff3333; }
+        .line-3 { color: #00ff66; }
+        #counter-display {
+            position: fixed;
+            top: 10px;
+            right: 15px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff66;
+            padding: 5px 10px;
+            font-size: 12px;
+            color: #00ff66;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="counter-display">Toplam Gönderilen: <span id="count">0</span> / 20.000</div>
+    <div id="terminal"></div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const countSpan = document.getElementById('count');
+        let counter = 1;
+        const maxLimit = 20000;
+
+        function addLines() {
+            if (counter > maxLimit) {
+                clearInterval(timer);
+                const div = document.createElement('div');
+                div.innerHTML = `<span class="line-2">[!] İşlem Tamamlandı. Toplam 20.000 mesaj gönderildi.</span>`;
+                terminal.appendChild(div);
+                return;
+            }
+
+            // Performans için döngü başına yazılan satır miktarını ayarlayabilirsin
+            for (let i = 0; i < 20; i++) {
+                if (counter > maxLimit) break;
+                
+                const div = document.createElement('div');
+                const randColorClass = Math.random() > 0.5 ? 'line-2' : 'line-3';
+                
+                div.innerHTML = `<span class="line-1">${counter} - </span><span class="${randColorClass}">MxstCC SAPLAR - MUSTAFA BAYRAK</span>`;
+                terminal.appendChild(div);
+                counter++;
+            }
+
+            countSpan.innerText = counter - 1;
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        // Hızlı akış için zamanlayıcı
+        const timer = setInterval(addLines, 15);
+    </script>
+
+</body>
+</html>
